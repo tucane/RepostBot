@@ -4,25 +4,25 @@ import time
 import os
 
 LOCATION = os.path.dirname(os.path.realpath("repost_bot.py"))
-OSAPREG = "o"
-PEYREG = "p"
-COLLEGEREG = "c" 
-MENTALREG = "m"
-SOCIALREG = "s"
-CSENGREG = "cs"
-REGEXS = [OSAPREG,
-          PEYREG,
-          COLLEGEREG,
-          MENTALREG,
-          SOCIALREG,
-          CSENGREG]
+OSAPREG = ".*(osap|ontario student assist|needs? money).*"
+PEYREG = ".*( pey |professional exper|intern).*"
+COLLEGEREG = ".*(college app|for college|vic |victoria|new college|innis|trinity|uc |university college|ww |woodsworth).*"
+MENTALREG = ".*(mental.+help|help.+mental|depress|anxiety).*"
+SOCIALREG = ".*(social ^(science)|introvert).*"
+CSENGREG = ".*(computer science| cs ).+easy.*"
+
+REGEXS = [MENTALREG, SOCIALREG, OSAPREG, PEYREG, COLLEGEREG, CSENGREG]
 
 reg_to_links = {}
 for regex in REGEXS:
     reg_to_links[regex] = []
+reg_to_limit = {}
+
+for regex in REGEXS:
+    reg_to_limit[regex] = 5
 
 link_to_description = {}
-
+commented = set()
 
 def read_from_files():
     read_from_file("osap.txt", OSAPREG)
@@ -40,79 +40,63 @@ def read_from_file(file_name, regex):
         reg_to_links[regex].append(link)
         link_to_description[link] = des
                 
-
 def add_link():
     return
 
+'''
+this method generates the bot's comment
+'''
 def get_comment(limit, post_type, links):
     result = ""
     result += "Hello OP, here are some old posts that you may find useful\n\n"
     for i in range(min(limit, len(links))):
-        result += "[{}]({}) ".format(link_to_description[links[i]], links[i])
+        result += "[{}]({})\n\n".format(link_to_description[links[i]], links[i])
     
-    result += "\n\n I am a bot, **beep boop**"
+    result += "\n\nI am a bot, **beep boop**"
     return result
 
 '''
-checking if the post has a similar topic to the followings:
-'''
-
-def check_OSAP(post):
-    return check_reg_match(post, OSAPREG, 5)
-
-def check_PEY(post):
-    return check_reg_match(post, PEYREG, 5)
-
-def check_college(post):
-    return check_reg_match(post, COLLEGEREG, 5)
-
-def check_mental(post):
-    return check_reg_match(post, MENTALREG, 5)
-
-def check_social(post):
-    return check_reg_match(post, SOCIALREG, 5)
-
-def check_cseng(post):
-    return check_reg_match(post, CSENGREG, 10)
-
-'''
+this method checks match for a generic regex
 '''
 def check_reg_match(post, regex, limit):
     title_match = re.match(regex, post.title.lower())
-    content.match = re.match(regex, post.body.lower())
+    content_match = re.match(regex, post.selftext.lower())
     if title_match or content_match:
+        print(get_comment(limit, regex, reg_to_links[regex]))
         post.add_comment(get_comment(limit, regex, reg_to_links[regex]))
         print(regex + " topic")
+        commented.add(post)
         return True
     return False
         
-
+'''
+this method checks for all the possible topics
+'''
 def check_all(post):
-    if not check_mental():
-        if not check_social():
-            if not check_OSAP():
-                if not check_PEY():
-                    if not check_college():
-                        check_cseng()
+    for regex in REGEXS:
+        if check_reg_match(post, regex, reg_to_limit[regex]):
+            return
 
         
 
-USERNAME = "bad_uoft_repost_bot"
+USERNAME = "uoft_repost_bot"
 PASSWORD = "123456"
 r = praw.Reddit(user_agent = "testing")
 r.login(USERNAME, "123456", disable_warning=True)
 
 def main():
     subreddit = r.get_subreddit("testingground4bots")
-    post = subreddit.get_new(limit=1)
+    posts = subreddit.get_new(limit=1)
     for post in posts:
-        check_all(post)
+        if post not in commented:
+            check_all(post)
 
 
 if __name__ == "__main__":
     read_from_files()
-    '''
+    
     while True:
-        time.sleep(1)
         main()
-    '''
+        time.sleep(10)
+#break
+    
