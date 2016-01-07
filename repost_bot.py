@@ -7,7 +7,7 @@ import traceback
 
 LOCATION = os.path.dirname(os.path.realpath("repost_bot.py"))
 OSAPREG = ".*(osap|ontario student assist|needs? money).*"
-PEYREG = ".*( pey |professional exper|intern).*"
+PEYREG = ".*(pey | pey|professional exper|intern |internship).*"
 COLLEGEREG = ".*(college app|for college|vic |victoria|new college|innis|trinity|uc |university college|ww |woodsworth).*"
 MENTALREG = ".*(mental.+help|help.+mental|mental breakdown|depress|anxiety).*"
 SOCIALREG = ".*((social(?! sci))|introvert).*"
@@ -47,6 +47,7 @@ def read_from_files():
     read_from_file("cseng.txt", CSENGREG)
     try:
         commented = pickle.load(open( "commented.p", "rb" ))
+        print(len(commented))
     except:
         print("no file yet")
 
@@ -81,11 +82,12 @@ this method checks match for a generic regex
 def check_reg_match(post, regex, limit):
     global commented
     title_match = re.match(regex, post.title.lower())
-    content_match = re.match(regex, post.selftext.lower().replace("\n",""))
+    content_match = re.match(regex, post.selftext.lower().replace("\n"," "))
     if title_match or content_match:
         #print(get_comment(limit, regex, reg_to_links[regex]))
         post.add_comment(get_comment(limit, regex, reg_to_links[regex]))
         #print(regex + " topic")
+        print("replied")
         commented.add(post.id)
         return True
     return False
@@ -124,7 +126,7 @@ if __name__ == "__main__":
             pickle.dump(commented, open( "commented.p", "wb" ))
             traceback.print_exc()
             break
-        time.sleep(10)
+        time.sleep(20)
 
 #break
     
