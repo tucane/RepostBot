@@ -30,7 +30,7 @@ regex_to_comment = {
 MENTALREG: "\"mental health help\"",
 SOCIALREG: "\"social life in uoft\"",
 OSAPREG: "\"OSAP(Ontario Student Assistant Program) questions\"",
-PEYREG: "\"PEY(Professional Experience Year) questions\"",
+PEYREG: "\"PEY(Professional Experience Year) and internship questions\"",
 COLLEGEREG: "\"College and residence questions\"",
 CSENGREG: "\"COMP ENG > CS REKT CS KIDS\""
 }
@@ -67,7 +67,7 @@ this method generates the bot's comment
 '''
 def get_comment(limit, post_type, links):
     result = ""
-    result += "Hello OP, your post has been catogorized into the common topic {}. ".format(regex_to_comment[post_type])
+    result += "Hello OP, your post has been categorized into the common topic {}. ".format(regex_to_comment[post_type])
     result += "Here are some old posts that you may find helpful\n\n"
     for i in range(min(limit, len(links))):
         result += "[{}]({})\n\n".format(link_to_description[links[i]], links[i])
