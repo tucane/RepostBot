@@ -10,7 +10,7 @@ OSAPREG = ".*(osap|ontario student assist|needs? money).*"
 PEYREG = ".*(pey | pey|professional exper|intern |internship).*"
 COLLEGEREG = ".*(college app|for college|vic |victoria|new college|innis|trinity|uc |university college|ww |woodsworth).*"
 MENTALREG = ".*(mental.+help|help.+mental|mental breakdown|depress|anxiety).*"
-SOCIALREG = ".*((social(?! sci))|introvert).*"
+SOCIALREG = ".*((social (?!sci))|introvert).*"
 CSENGREG = ".*(computer science| cs ).+easy.+engineer.*"
 
 REGEXS = [MENTALREG, SOCIALREG, OSAPREG, PEYREG, COLLEGEREG, CSENGREG]
@@ -32,7 +32,7 @@ SOCIALREG: "\"social life in uoft\"",
 OSAPREG: "\"OSAP(Ontario Student Assistant Program) questions\"",
 PEYREG: "\"PEY(Professional Experience Year) and internship questions\"",
 COLLEGEREG: "\"College and residence questions\"",
-CSENGREG: "\"COMP ENG > CS REKT CS KIDS\""
+CSENGREG: "\"COMP ENG > CS\""
 }
 
 commented = set()
