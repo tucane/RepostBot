@@ -82,8 +82,8 @@ this method checks match for a generic regex
 def check_reg_match(post, regex, limit):
     global commented
     title_match = re.match(regex, post.title.lower())
-    content_match = re.match(regex, post.selftext.lower().replace("\n"," "))
-    if title_match or content_match:
+    #content_match = re.match(regex, post.selftext.lower().replace("\n"," "))
+    if title_match: # or content_match:
         #print(get_comment(limit, regex, reg_to_links[regex]))
         post.add_comment(get_comment(limit, regex, reg_to_links[regex]))
         #print(regex + " topic")
@@ -109,7 +109,7 @@ r.login(USERNAME, "123456", disable_warning=True)
 
 def main():
     subreddit = r.get_subreddit("uoft")
-    posts = subreddit.get_new(limit=5)
+    posts = subreddit.get_new(limit=10)
     for post in posts:
         if post.id not in commented:
             check_all(post)
