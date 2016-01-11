@@ -111,7 +111,7 @@ def main():
     subreddit = r.get_subreddit("uoft")
     posts = subreddit.get_new(limit=10)
     for post in posts:
-        if post.id not in commented:
+        if post.is_self and post.id not in commented:
             check_all(post)
     print("done cycle")
 
