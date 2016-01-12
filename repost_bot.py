@@ -8,7 +8,7 @@ import traceback
 LOCATION = os.path.dirname(os.path.realpath("repost_bot.py"))
 OSAPREG = ".*(osap|ontario student assist|needs? money).*"
 PEYREG = ".*(pey | pey|professional exper|intern |internship).*"
-COLLEGEREG = ".*(college app|for college|vic |victoria|new college|innis|trinity|uc |university college|ww |woodsworth).*"
+COLLEGEREG = ".*(college app|for college|college add|vic |victoria|new college|innis|trinity|uc |university college|ww |woodsworth).*"
 MENTALREG = ".*(mental.+help|help.+mental|mental breakdown|depress|anxiety).*"
 SOCIALREG = ".*((social (?!sci))|introvert).*"
 CSENGREG = ".*(computer science| cs ).+easy.+engineer.*"
